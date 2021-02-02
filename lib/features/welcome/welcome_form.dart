@@ -3,7 +3,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
 
 class WelcomeForm extends HookWidget {
-  final Function(String, String, DateTime) onSubmit;
+  final Function({
+    String brideName,
+    String groomName,
+    DateTime weedingDay,
+  }) onSubmit;
 
   WelcomeForm({this.onSubmit});
 
@@ -15,6 +19,7 @@ class WelcomeForm extends HookWidget {
         useTextEditingController.fromValue(TextEditingValue.empty);
     final selectedDate = useState<DateTime>();
     final formKey = GlobalKey<FormState>();
+    final showSelectedDateError = useState(false);
 
     final mediaQuery = MediaQuery.of(context);
 
@@ -30,16 +35,21 @@ class WelcomeForm extends HookWidget {
         }
 
         selectedDate.value = pickedDate;
+        showSelectedDateError.value = false;
       });
     }
 
     submit() {
-      if (!formKey.currentState.validate() || selectedDate == null) {
+      if (selectedDate.value == null) showSelectedDateError.value = true;
+      if (!formKey.currentState.validate()) {
         return null;
       }
 
-      onSubmit(brideNameController.text, groomNameController.text,
-          selectedDate.value);
+      onSubmit(
+        brideName: brideNameController.text,
+        groomName: groomNameController.text,
+        weedingDay: selectedDate.value,
+      );
     }
 
     return Form(
@@ -60,18 +70,29 @@ class WelcomeForm extends HookWidget {
             decoration: InputDecoration(labelText: 'Nome do Noivo'),
           ),
           SizedBox(height: mediaQuery.size.height * 0.01),
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Text(selectedDate.value == null
-                    ? 'Nenhuma Data Selecionada!'
-                    : 'Data Selecionada: ${DateFormat('dd/MM/y').format(selectedDate.value)}'),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(selectedDate.value == null
+                        ? 'Nenhuma Data Selecionada!'
+                        : 'Data Selecionada: ${DateFormat('dd/MM/y').format(selectedDate.value)}'),
+                  ),
+                  FlatButton(
+                    onPressed: _showDatePicker,
+                    textColor: Theme.of(context).primaryColor,
+                    child: Text('Selecionar Data'),
+                  ),
+                ],
               ),
-              FlatButton(
-                onPressed: _showDatePicker,
-                textColor: Theme.of(context).primaryColor,
-                child: Text('Selecionar Data'),
-              )
+              showSelectedDateError.value
+                  ? Text(
+                      'Por favor selecione uma data válida !',
+                      style: TextStyle(color: Theme.of(context).errorColor),
+                    )
+                  : Container()
             ],
           ),
           RaisedButton(
