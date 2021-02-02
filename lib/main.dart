@@ -27,7 +27,7 @@ class WeedingPlanner extends StatelessWidget {
               ),
             ),
       ),
-      initialRoute: Routes.welcome,
+      initialRoute: Routes.home,
       routes: RoutesMap.routes,
     );
   }
