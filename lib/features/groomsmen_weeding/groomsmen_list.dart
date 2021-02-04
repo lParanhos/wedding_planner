@@ -3,10 +3,12 @@ import 'package:weeding_planner/enums/groomsmens_side.dart';
 import 'package:weeding_planner/models/groomsmens.dart';
 
 class GroomsmensList extends StatelessWidget {
-  final List<Groomsmens> groomsmensList;
   final bool showSide;
+  final Function(int) onDelete;
+  final List<Groomsmens> groomsmensList;
 
   GroomsmensList({
+    this.onDelete,
     this.groomsmensList,
     this.showSide = false,
   });
@@ -23,6 +25,13 @@ class GroomsmensList extends StatelessWidget {
             title: Text(groomsmensList[index].names),
             subtitle:
                 showSide ? Text(toSideText(groomsmensList[index].side)) : null,
+            trailing: IconButton(
+              icon: Icon(
+                Icons.delete,
+                color: Theme.of(context).errorColor,
+              ),
+              onPressed: () {},
+            ),
           ),
         );
       },

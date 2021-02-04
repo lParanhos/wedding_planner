@@ -19,6 +19,7 @@ class Groomsmen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final groomsmensList = useState<List<Groomsmens>>([
+      //TODO: create id to gromsmens
       Groomsmens(names: 'João & Maria', side: GroomsmensSide.groom),
       Groomsmens(names: 'Carlos & Maria', side: GroomsmensSide.bride),
       Groomsmens(names: 'Cleber & Maria', side: GroomsmensSide.groom),
@@ -32,8 +33,13 @@ class Groomsmen extends HookWidget {
     ]);
 
     _addGroomsmens(Groomsmens groomsmens) {
-      print(groomsmens.names);
       groomsmensList.value = [...groomsmensList.value, groomsmens];
+    }
+
+    _deleteGroomsmens(int groomsmensIndex) {
+      //TODO: implements delete
+      groomsmensList.value.removeAt(groomsmensIndex);
+      groomsmensList.value = List.from(groomsmensList.value);
     }
 
     return DefaultTabController(
@@ -63,6 +69,7 @@ class Groomsmen extends HookWidget {
               groomsmensList: groomsmensList.value
                   .where((groomsmen) => groomsmen.side == GroomsmensSide.bride)
                   .toList(),
+              onDelete: _deleteGroomsmens,
             ),
             GroomsmensList(
               groomsmensList: groomsmensList.value
