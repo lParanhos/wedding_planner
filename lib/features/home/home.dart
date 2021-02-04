@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weeding_planner/routes.dart';
 import 'package:weeding_planner/utils/assets.dart';
 import 'package:weeding_planner/widgets/home_info_text.dart';
 
@@ -25,7 +26,7 @@ class Home extends StatelessWidget {
               ),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () => Navigator.pushNamed(context, Routes.groomsmen),
               title: Text('Padrinhos'),
             ),
             ListTile(
