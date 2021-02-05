@@ -26,16 +26,16 @@ class Home extends StatelessWidget {
               ),
             ),
             ListTile(
-              onTap: () => Navigator.pushNamed(context, Routes.groomsmen),
               title: Text('Padrinhos'),
+              onTap: () => Navigator.pushNamed(context, Routes.groomsmen),
             ),
             ListTile(
-              onTap: () => Navigator.pushNamed(context, Routes.guests),
               title: Text('Convidados'),
+              onTap: () => Navigator.pushNamed(context, Routes.guests),
             ),
             ListTile(
-              onTap: () {},
               title: Text('Fornecedores'),
+              onTap: () => Navigator.pushNamed(context, Routes.suppliers),
             ),
           ],
         ),
