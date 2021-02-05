@@ -30,7 +30,7 @@ class Home extends StatelessWidget {
               title: Text('Padrinhos'),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () => Navigator.pushNamed(context, Routes.guests),
               title: Text('Convidados'),
             ),
             ListTile(
