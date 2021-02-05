@@ -4,13 +4,13 @@ import 'package:weeding_planner/models/groomsmens.dart';
 
 class GroomsmensList extends StatelessWidget {
   final bool showSide;
-  final Function(int) onDelete;
+  final Function(String) onDelete;
   final List<Groomsmens> groomsmensList;
 
   GroomsmensList({
-    this.onDelete,
-    this.groomsmensList,
     this.showSide = false,
+    @required this.onDelete,
+    @required this.groomsmensList,
   });
 
   @override
@@ -30,7 +30,7 @@ class GroomsmensList extends StatelessWidget {
                 Icons.delete,
                 color: Theme.of(context).errorColor,
               ),
-              onPressed: () {},
+              onPressed: () => onDelete(groomsmensList[index].id),
             ),
           ),
         );

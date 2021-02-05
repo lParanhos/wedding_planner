@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:weeding_planner/enums/groomsmens_side.dart';
@@ -19,26 +21,54 @@ class Groomsmen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final groomsmensList = useState<List<Groomsmens>>([
-      //TODO: create id to gromsmens
-      Groomsmens(names: 'João & Maria', side: GroomsmensSide.groom),
-      Groomsmens(names: 'Carlos & Maria', side: GroomsmensSide.bride),
-      Groomsmens(names: 'Cleber & Maria', side: GroomsmensSide.groom),
-      Groomsmens(names: 'Bruno & Maria', side: GroomsmensSide.bride),
-      Groomsmens(names: 'Jonas & Maria', side: GroomsmensSide.groom),
-      Groomsmens(names: 'Pedro & Maria', side: GroomsmensSide.groom),
-      Groomsmens(names: 'Lucas & Maria', side: GroomsmensSide.bride),
-      Groomsmens(names: 'Ronaldo & Maria', side: GroomsmensSide.groom),
-      Groomsmens(names: 'Vitones & Maria', side: GroomsmensSide.groom),
-      Groomsmens(names: 'Dunga & Maria', side: GroomsmensSide.bride),
+      Groomsmens(
+          id: Random().nextDouble().toString(),
+          names: 'João & Maria',
+          side: GroomsmensSide.groom),
+      Groomsmens(
+          id: Random().nextDouble().toString(),
+          names: 'Carlos & Maria',
+          side: GroomsmensSide.bride),
+      Groomsmens(
+          id: Random().nextDouble().toString(),
+          names: 'Cleber & Maria',
+          side: GroomsmensSide.groom),
+      Groomsmens(
+          id: Random().nextDouble().toString(),
+          names: 'Bruno & Maria',
+          side: GroomsmensSide.bride),
+      Groomsmens(
+          id: Random().nextDouble().toString(),
+          names: 'Jonas & Maria',
+          side: GroomsmensSide.groom),
+      Groomsmens(
+          id: Random().nextDouble().toString(),
+          names: 'Pedro & Maria',
+          side: GroomsmensSide.groom),
+      Groomsmens(
+          id: Random().nextDouble().toString(),
+          names: 'Lucas & Maria',
+          side: GroomsmensSide.bride),
+      Groomsmens(
+          id: Random().nextDouble().toString(),
+          names: 'Ronaldo & Maria',
+          side: GroomsmensSide.groom),
+      Groomsmens(
+          id: Random().nextDouble().toString(),
+          names: 'Vitones & Maria',
+          side: GroomsmensSide.groom),
+      Groomsmens(
+          id: Random().nextDouble().toString(),
+          names: 'Dunga & Maria',
+          side: GroomsmensSide.bride),
     ]);
 
     _addGroomsmens(Groomsmens groomsmens) {
       groomsmensList.value = [...groomsmensList.value, groomsmens];
     }
 
-    _deleteGroomsmens(int groomsmensIndex) {
-      //TODO: implements delete
-      groomsmensList.value.removeAt(groomsmensIndex);
+    _deleteGroomsmens(String id) {
+      groomsmensList.value.removeWhere((groomsmen) => groomsmen.id == id);
       groomsmensList.value = List.from(groomsmensList.value);
     }
 
@@ -66,19 +96,21 @@ class Groomsmen extends HookWidget {
         body: TabBarView(
           children: [
             GroomsmensList(
+              onDelete: _deleteGroomsmens,
               groomsmensList: groomsmensList.value
                   .where((groomsmen) => groomsmen.side == GroomsmensSide.bride)
                   .toList(),
-              onDelete: _deleteGroomsmens,
             ),
             GroomsmensList(
+              onDelete: _deleteGroomsmens,
               groomsmensList: groomsmensList.value
                   .where((groomsmen) => groomsmen.side == GroomsmensSide.groom)
                   .toList(),
             ),
             GroomsmensList(
-              groomsmensList: groomsmensList.value,
               showSide: true,
+              onDelete: _deleteGroomsmens,
+              groomsmensList: groomsmensList.value,
             ),
           ],
         ),
