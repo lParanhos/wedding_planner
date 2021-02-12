@@ -18,7 +18,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: apk-build
-          path: build/app/outputs/bundle/release
+          path: {{ github.workspace }}/build/app/outputs/bundle/release
       - name: Deploy
         if: (github.base_ref == 'main' && github.event_name == 'pull_request')
         uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
