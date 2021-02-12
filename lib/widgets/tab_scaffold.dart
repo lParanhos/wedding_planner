@@ -12,7 +12,7 @@ class TabScaffold extends StatelessWidget {
     @required this.title,
     @required this.tabs,
     @required this.tabsViews,
-    @required this.callback,
+    this.callback,
   });
 
   @override
@@ -27,10 +27,11 @@ class TabScaffold extends StatelessWidget {
             tabs: tabs,
           ),
           actions: [
-            IconButton(
-              icon: Icon(Icons.group_add),
-              onPressed: () => callback(context),
-            ),
+            if (callback != null)
+              IconButton(
+                icon: Icon(Icons.group_add),
+                onPressed: () => callback(context),
+              ),
           ],
         ),
         body: TabBarView(
