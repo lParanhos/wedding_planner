@@ -27,7 +27,7 @@ jobs:
           releaseNotesFile: README.md
           file: ApiDemos-debug.apk
       - name: Upload artifact to Firebase Distribution with debug
-        uses: ./
+        uses: actions/upload-artifact@master
         with:
           appId: ${{secrets.FIREBASE_APP_ID}}
           token: ${{secrets.FIREBASE_TOKEN}}
