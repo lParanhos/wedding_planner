@@ -7,14 +7,13 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: "beta"
       - name: Checkout
         uses: actions/checkout@master
       - name: Build APK
-        uses: subosito/flutter-action@v1
-        with:
-          channel: 'beta'
-        run: flutter pub get
-        run: flutter build apk
+        run: flutter pub get && flutter build apk
       - name: Upload artifact
         uses: actions/upload-artifact@master
         with:
