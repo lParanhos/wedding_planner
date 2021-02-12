@@ -48,6 +48,9 @@ android {
 
     buildTypes {
         release {
+            firebaseAppDistribution {
+                appId="1:543212345:android:93690bfb936b9c"
+            }
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
