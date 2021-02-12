@@ -13,12 +13,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Build APK
-        run: flutter pub get && flutter build appbundle && flutter build apk
+        run: flutter pub get && flutter build apk
       - name: Upload artifact
         uses: actions/upload-artifact@master
         with:
-          name: apk-build
-          path: /build/app/outputs/bundle/release
+          name: apk-release
+          path: build/app/outputs/bundle/release/app-release.apk
       - name: Deploy
         if: (github.base_ref == 'main' && github.event_name == 'pull_request')
         uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
