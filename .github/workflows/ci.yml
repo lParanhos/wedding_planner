@@ -35,7 +35,6 @@ jobs:
         with:
           name: apk-release
           path: build/app/outputs/bundle/release/app-release.apk
-
 - name: Firebase App Distribution
       uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
       with:
