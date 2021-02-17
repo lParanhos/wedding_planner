@@ -1,6 +1,26 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:weeding_planner/routes.dart';
 
 class Login extends StatelessWidget {
+  onSignIn(BuildContext context) async {
+    try {
+      FirebaseAuth auth = FirebaseAuth.instance;
+
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+        email: '',
+        password: '',
+      );
+      Navigator.pushNamed(context, Routes.welcome);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +36,7 @@ class Login extends StatelessWidget {
                 decoration: InputDecoration(labelText: 'Senha'),
               ),
               FlatButton(
-                onPressed: () {},
+                onPressed: () async => await onSignIn(context),
                 child: Text('Entrar'),
               ),
               Row(
