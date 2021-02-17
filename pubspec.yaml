@@ -29,6 +29,7 @@ dependencies:
   cupertino_icons: ^1.0.0
   flutter_hooks: ^0.15.0
   firebase_core: 0.7.0
+  firebase_auth: ^0.20.0+1
   intl: ^0.16.1
 
 dev_dependencies:
