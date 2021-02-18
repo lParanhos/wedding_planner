@@ -16,6 +16,7 @@ class WeedingPlanner extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         //primaryColor: Color(0xFF27187e),
+        backgroundColor: Colors.lightBlue[800],
         primarySwatch: Colors.indigo,
         scaffoldBackgroundColor: Color(0xFFf1f2f6),
         visualDensity: VisualDensity.adaptivePlatformDensity,
