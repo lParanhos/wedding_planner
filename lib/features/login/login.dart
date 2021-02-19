@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:weeding_planner/helpers/firebase.dart';
 import 'package:weeding_planner/routes.dart';
 import 'package:weeding_planner/services/auth.dart';
 import 'package:weeding_planner/widgets/app_logo.dart';
@@ -18,7 +17,7 @@ class Login extends HookWidget {
   }) async {
     try {
       final result = await AuthService().tryLogin(email, password);
-      if (result.status == ResponseStatus.success) {
+      if (result.statusCode == 200) {
         Navigator.pushNamedAndRemoveUntil(
             context, Routes.welcome, (_) => false);
         return;

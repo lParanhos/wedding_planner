@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:weeding_planner/helpers/firebase.dart';
+import 'package:weeding_planner/helpers/firebase_helpers.dart';
+import 'package:weeding_planner/protocol/request_result.dart';
 
 class AuthService {
   Future<RequestResult> tryLogin(String email, String password) async {
@@ -11,15 +12,15 @@ class AuthService {
         password: password,
       );
 
-      return FirebaseHelpers().requestSuccess();
+      return requestSuccess();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        return FirebaseHelpers().requestError('Usuário não encontrado !');
+        return requestError(404, 'Usuário não encontrado !');
       } else if (e.code == 'wrong-password') {
-        return FirebaseHelpers().requestError('Senha inválida !');
+        return requestError(403, 'Senha inválida !');
       }
 
-      return FirebaseHelpers().requestError('Houve um problema :(');
+      return requestError(500, 'Houve um problema :(');
     }
   }
 }
