@@ -23,4 +23,24 @@ class AuthService {
       return requestError(500, 'Houve um problema :(');
     }
   }
+
+  Future<RequestResult> tryCreateUser(String email, String password) async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      return requestSuccess();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        return requestError(403, 'Senha fraca!');
+      } else if (e.code == 'email-already-in-use') {
+        return requestError(403, 'E-mail já cadastrado !');
+      }
+
+      return requestError(500, 'Houve um problema :(');
+    }
+  }
 }

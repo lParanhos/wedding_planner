@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:weeding_planner/routes.dart';
 import 'package:weeding_planner/services/auth.dart';
 import 'package:weeding_planner/widgets/app_logo.dart';
 import 'package:weeding_planner/widgets/custom_text_form_field.dart';
-import 'package:weeding_planner/widgets/circular_icon_button.dart';
 
-class Login extends HookWidget {
+class Join extends HookWidget {
   final _formKey = GlobalKey<FormState>();
 
   onSignIn({
@@ -82,48 +80,9 @@ class Login extends HookWidget {
                     }
                   },
                   child: const Text(
-                    'Entrar',
+                    'Salvar',
                     style: TextStyle(color: Colors.white, fontSize: 16.0),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Novo usuário ?',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    FlatButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () =>
-                          Navigator.of(context).pushNamed(Routes.join),
-                      child: const Text(
-                        'Cadastre-se',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    const Text(
-                      'Ou faça login com',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    const SizedBox(height: 12.0),
-                    CircularIconButton(
-                      icon: FaIcon(
-                        FontAwesomeIcons.google,
-                        color: Colors.white,
-                      ),
-                      color: Colors.deepOrange[700],
-                      onPressed: () {},
-                    ),
-                  ],
                 ),
               ],
             ),

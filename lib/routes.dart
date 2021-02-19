@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weeding_planner/features/groomsmen_weeding/groomsmen.dart';
 import 'package:weeding_planner/features/guests/guests.dart';
 import 'package:weeding_planner/features/home/home.dart';
+import 'package:weeding_planner/features/join/join.dart';
 import 'package:weeding_planner/features/login/login.dart';
 import 'package:weeding_planner/features/suppliers/suppliers.dart';
 import 'package:weeding_planner/features/welcome/welcome.dart';
@@ -13,6 +14,7 @@ class Routes {
   static const groomsmen = '/groomsmen';
   static const guests = '/guests';
   static const suppliers = '/suppliers';
+  static const join = '/join';
 }
 
 extension RoutesMap on Routes {
@@ -23,5 +25,6 @@ extension RoutesMap on Routes {
         Routes.groomsmen: (context) => Groomsmen(),
         Routes.guests: (context) => Guests(),
         Routes.suppliers: (context) => Suppliers(),
+        Routes.join: (context) => Join(),
       };
 }
