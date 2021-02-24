@@ -1,6 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:weeding_planner/helpers/firebase_helpers.dart';
+import 'package:weeding_planner/models/user.dart';
 import 'package:weeding_planner/protocol/request_result.dart';
+import 'package:weeding_planner/services/sharedPrefs.dart';
 
 class AuthService {
   Future<RequestResult> tryLogin(String email, String password) async {
@@ -11,6 +14,8 @@ class AuthService {
         email: email,
         password: password,
       );
+
+      await _saveUserData(userCredential);
 
       return requestSuccess();
     } on FirebaseAuthException catch (e) {
@@ -32,6 +37,8 @@ class AuthService {
         password: password,
       );
 
+      await _saveUserData(userCredential);
+
       return requestSuccess();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -42,5 +49,15 @@ class AuthService {
 
       return requestError(500, 'Houve um problema :(');
     }
+  }
+
+  _saveUserData(UserCredential userCredential) async {
+    final prefs = SharedPrefs();
+    final User user = User(
+      name: userCredential.user.displayName,
+      token: userCredential.user.refreshToken,
+      weedingCode: userCredential.user.uid.substring(0, 4),
+    );
+    await prefs.setUserData(user);
   }
 }

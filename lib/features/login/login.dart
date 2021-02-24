@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:weeding_planner/protocol/request_result.dart';
 import 'package:weeding_planner/routes.dart';
 import 'package:weeding_planner/services/auth.dart';
 import 'package:weeding_planner/widgets/app_logo.dart';
@@ -10,31 +11,22 @@ import 'package:weeding_planner/widgets/circular_icon_button.dart';
 class Login extends HookWidget {
   final _formKey = GlobalKey<FormState>();
 
-  onSignIn({
+  handleAuth({
     @required BuildContext context,
-    @required String email,
-    @required String password,
+    @required RequestResult result,
+    @required String routeName,
   }) async {
-    try {
-      final result = await AuthService().tryLogin(email, password);
-      if (result.statusCode == 200) {
-        Navigator.pushNamedAndRemoveUntil(
-            context, Routes.welcome, (_) => false);
-        return;
-      }
-
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: Text(result.message),
-        ),
-      );
-
-      print('Falhou');
-    } catch (e) {
-      print('ERROR');
-      print(e);
+    if (result.statusCode == 200) {
+      Navigator.pushNamedAndRemoveUntil(context, routeName, (_) => false);
+      return;
     }
+
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text(result.message),
+      ),
+    );
   }
 
   handleValidate(String value, String errorMessage) {
@@ -47,6 +39,9 @@ class Login extends HookWidget {
   Widget build(BuildContext context) {
     final emailController = useTextEditingController(text: '');
     final passController = useTextEditingController(text: '');
+    final inviteCodeController = useTextEditingController(text: '');
+    final Map arguments = ModalRoute.of(context).settings.arguments as Map;
+    final bool hasInviteCode = arguments != null ? arguments['invited'] : false;
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
@@ -58,6 +53,15 @@ class Login extends HookWidget {
               padding: EdgeInsets.all(18.0),
               children: [
                 const AppLogo(),
+                if (hasInviteCode) ...[
+                  CustomTextFormField(
+                    label: 'Código do convite',
+                    controller: inviteCodeController,
+                    validator: (value) =>
+                        handleValidate(value, 'Insira um código valido!'),
+                  ),
+                  const SizedBox(height: 8.0),
+                ],
                 CustomTextFormField(
                   label: 'E-mail',
                   controller: emailController,
@@ -74,10 +78,13 @@ class Login extends HookWidget {
                 FlatButton(
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
-                      await onSignIn(
+                      final result = await AuthService()
+                          .tryLogin(emailController.text, passController.text);
+
+                      handleAuth(
                         context: ctx,
-                        email: emailController.text,
-                        password: passController.text,
+                        result: result,
+                        routeName: Routes.welcome,
                       );
                     }
                   },
@@ -97,8 +104,18 @@ class Login extends HookWidget {
                     ),
                     FlatButton(
                       padding: EdgeInsets.zero,
-                      onPressed: () =>
-                          Navigator.of(context).pushNamed(Routes.join),
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          final result = await AuthService().tryCreateUser(
+                              emailController.text, passController.text);
+
+                          handleAuth(
+                            context: ctx,
+                            result: result,
+                            routeName: Routes.welcome,
+                          );
+                        }
+                      },
                       child: const Text(
                         'Cadastre-se',
                         style: TextStyle(
