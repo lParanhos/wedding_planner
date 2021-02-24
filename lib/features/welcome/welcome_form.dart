@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
+import 'package:weeding_planner/widgets/custom_text_form_field.dart';
+
+final _formKey = GlobalKey<FormState>();
 
 class WelcomeForm extends HookWidget {
   final Function({
@@ -13,12 +16,9 @@ class WelcomeForm extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final brideNameController =
-        useTextEditingController.fromValue(TextEditingValue.empty);
-    final groomNameController =
-        useTextEditingController.fromValue(TextEditingValue.empty);
+    final brideNameController = useTextEditingController(text: '');
+    final groomNameController = useTextEditingController(text: '');
     final selectedDate = useState<DateTime>();
-    final formKey = GlobalKey<FormState>();
     final showSelectedDateError = useState(false);
 
     final mediaQuery = MediaQuery.of(context);
@@ -41,7 +41,7 @@ class WelcomeForm extends HookWidget {
 
     submit() {
       if (selectedDate.value == null) showSelectedDateError.value = true;
-      if (!formKey.currentState.validate()) {
+      if (!_formKey.currentState.validate()) {
         return null;
       }
 
@@ -53,21 +53,21 @@ class WelcomeForm extends HookWidget {
     }
 
     return Form(
-      key: formKey,
+      key: _formKey,
       child: Column(
         children: [
-          TextFormField(
+          CustomTextFormField(
             controller: brideNameController,
             validator: (value) =>
                 value.isEmpty ? 'Insira o nome da noiva' : null,
-            decoration: InputDecoration(labelText: 'Nome da Noiva'),
+            label: 'Nome da Noiva',
           ),
           SizedBox(height: mediaQuery.size.height * 0.01),
-          TextFormField(
+          CustomTextFormField(
             controller: groomNameController,
             validator: (value) =>
                 value.isEmpty ? 'Insira o nome do noivo' : null,
-            decoration: InputDecoration(labelText: 'Nome do Noivo'),
+            label: 'Nome do Noivo',
           ),
           SizedBox(height: mediaQuery.size.height * 0.01),
           Column(
@@ -76,14 +76,20 @@ class WelcomeForm extends HookWidget {
               Row(
                 children: [
                   Expanded(
-                    child: Text(selectedDate.value == null
-                        ? 'Nenhuma Data Selecionada!'
-                        : 'Data Selecionada: ${DateFormat('dd/MM/y').format(selectedDate.value)}'),
+                    child: Text(
+                      selectedDate.value == null
+                          ? 'Nenhuma Data Selecionada!'
+                          : 'Data Selecionada: ${DateFormat('dd/MM/y').format(selectedDate.value)}',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                   FlatButton(
                     onPressed: _showDatePicker,
                     textColor: Theme.of(context).primaryColor,
-                    child: Text('Selecionar Data'),
+                    child: Text(
+                      'Selecionar Data',
+                      style: Theme.of(context).textTheme.button,
+                    ),
                   ),
                 ],
               ),
@@ -97,10 +103,10 @@ class WelcomeForm extends HookWidget {
           ),
           RaisedButton(
             onPressed: submit,
-            color: Theme.of(context).primaryColor,
-            textColor: Theme.of(context).textTheme.button.color,
+            color: Theme.of(context).buttonColor,
             child: Text(
               'Continuar',
+              style: Theme.of(context).textTheme.button,
             ),
           ),
         ],

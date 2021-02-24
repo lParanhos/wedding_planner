@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:weeding_planner/helpers/firebase_helpers.dart';
 import 'package:weeding_planner/models/user.dart';
@@ -56,7 +55,7 @@ class AuthService {
     final User user = User(
       name: userCredential.user.displayName,
       token: userCredential.user.refreshToken,
-      weedingCode: userCredential.user.uid.substring(0, 4),
+      weddingCode: userCredential.user.uid.substring(0, 4),
     );
     await prefs.setUserData(user);
   }

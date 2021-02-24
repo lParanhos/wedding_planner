@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:weeding_planner/routes.dart';
+import 'package:weeding_planner/services/sharedPrefs.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,6 +11,8 @@ void main() async {
 }
 
 class WeedingPlanner extends StatelessWidget {
+  final isAuth = true;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,7 +36,7 @@ class WeedingPlanner extends StatelessWidget {
             ),
         buttonColor: Colors.blue,
       ),
-      initialRoute: Routes.onboarding,
+      initialRoute: isAuth ? Routes.welcome : Routes.onboarding,
       routes: RoutesMap.routes,
     );
   }
