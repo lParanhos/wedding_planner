@@ -7,6 +7,7 @@ final _formKey = GlobalKey<FormState>();
 
 class WelcomeForm extends HookWidget {
   final Function({
+    BuildContext context,
     String brideName,
     String groomName,
     DateTime weedingDay,
@@ -46,6 +47,7 @@ class WelcomeForm extends HookWidget {
       }
 
       onSubmit(
+        context: context,
         brideName: brideNameController.text,
         groomName: groomNameController.text,
         weedingDay: selectedDate.value,
