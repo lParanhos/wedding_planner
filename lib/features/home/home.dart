@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weeding_planner/routes.dart';
-import 'package:weeding_planner/utils/assets.dart';
+import 'package:weeding_planner/widgets/countdown.dart';
 import 'package:weeding_planner/widgets/home_info_text.dart';
 
 class Home extends StatelessWidget {
@@ -41,14 +41,11 @@ class Home extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.fromLTRB(16.0, 48.0, 16.0, 16.0),
+        padding: EdgeInsets.only(bottom: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-              Assets.homeWeddingImage,
-              width: 250.0,
-            ),
+            Countdown(),
             SizedBox(
               height: mediaQuery.size.height * 0.05,
             ),
