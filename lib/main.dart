@@ -54,7 +54,7 @@ class WeedingPlanner extends StatelessWidget {
             ),
         buttonColor: Colors.blue,
       ),
-      initialRoute: _isAuth ? Routes.welcome : Routes.onboarding,
+      initialRoute: _isAuth ? Routes.splashScreen : Routes.onboarding,
       routes: RoutesMap.routes,
     );
   }
