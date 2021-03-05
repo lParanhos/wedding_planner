@@ -1,21 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:weeding_planner/features/welcome/welcome_form.dart';
+import 'package:weeding_planner/protocol/request_result.dart';
+import 'package:weeding_planner/routes.dart';
+import 'package:weeding_planner/widgets/app_logo.dart';
+import 'package:weeding_planner/services/wedding.dart';
 
 class Welcome extends StatelessWidget {
-  _submit({String brideName, String groomName, DateTime weedingDay}) {
-    print('value');
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  _submit({
+    BuildContext context,
+    String brideName,
+    String groomName,
+    DateTime weedingDay,
+  }) async {
+    RequestResult result = await WeedingService().tryCreateWedding(
+        brideName: brideName, groomName: groomName, weedingDay: weedingDay);
+
+    if (result.statusCode == 200) {
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(Routes.home, (route) => false);
+      return;
+    }
+
+    scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text(result.message),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
+      key: scaffoldKey,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Meu Casamento',
-          style: TextStyle(color: Colors.black),
+          'Crie seu Casamento',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: SafeArea(
@@ -26,13 +53,7 @@ class Welcome extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: mediaQuery.size.height * 0.05),
-                  Text(
-                    'Seja bem vindo !',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                    ),
-                  ),
+                  const AppLogo(),
                   SizedBox(height: mediaQuery.size.height * 0.05),
                   WelcomeForm(
                     onSubmit: _submit,

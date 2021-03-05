@@ -1,15 +1,36 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:weeding_planner/routes.dart';
+import 'package:weeding_planner/services/firebase.dart';
+import 'package:weeding_planner/services/sharedPrefs.dart';
+
+void setupSingletons() async {
+  if (!GetIt.instance.isRegistered<FirebaseService>()) {
+    GetIt.instance
+        .registerLazySingleton<FirebaseService>(() => FirebaseService());
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
+  setupSingletons();
 
   runApp(WeedingPlanner());
 }
 
+// ignore: must_be_immutable
 class WeedingPlanner extends StatelessWidget {
+  final FirebaseService _firebaseService = GetIt.I.get<FirebaseService>();
+
+  bool _isAuth;
+
+  WeedingPlanner() {
+    _isAuth = _firebaseService.firebaseAuth.currentUser != null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,7 +54,7 @@ class WeedingPlanner extends StatelessWidget {
             ),
         buttonColor: Colors.blue,
       ),
-      initialRoute: Routes.onboarding,
+      initialRoute: _isAuth ? Routes.welcome : Routes.onboarding,
       routes: RoutesMap.routes,
     );
   }

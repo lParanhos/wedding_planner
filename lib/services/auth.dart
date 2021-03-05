@@ -1,16 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
+import 'package:get_it/get_it.dart';
 import 'package:weeding_planner/helpers/firebase_helpers.dart';
 import 'package:weeding_planner/models/user.dart';
 import 'package:weeding_planner/protocol/request_result.dart';
+import 'package:weeding_planner/services/firebase.dart';
 import 'package:weeding_planner/services/sharedPrefs.dart';
 
 class AuthService {
+  FirebaseService _firebaseService = GetIt.I.get<FirebaseService>();
   Future<RequestResult> tryLogin(String email, String password) async {
     try {
-      FirebaseAuth auth = FirebaseAuth.instance;
-
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+      UserCredential userCredential =
+          await _firebaseService.firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -32,7 +33,7 @@ class AuthService {
   Future<RequestResult> tryCreateUser(String email, String password) async {
     try {
       UserCredential userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          await _firebaseService.firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -56,7 +57,7 @@ class AuthService {
     final User user = User(
       name: userCredential.user.displayName,
       token: userCredential.user.refreshToken,
-      weedingCode: userCredential.user.uid.substring(0, 4),
+      weddingCode: userCredential.user.uid.substring(0, 4),
     );
     await prefs.setUserData(user);
   }
