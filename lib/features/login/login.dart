@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:weeding_planner/models/wedding.dart';
 import 'package:weeding_planner/protocol/request_result.dart';
 import 'package:weeding_planner/routes.dart';
 import 'package:weeding_planner/services/auth.dart';
+import 'package:weeding_planner/services/wedding.dart';
 import 'package:weeding_planner/widgets/app_logo.dart';
 import 'package:weeding_planner/widgets/custom_text_form_field.dart';
 import 'package:weeding_planner/widgets/circular_icon_button.dart';
@@ -12,10 +14,16 @@ class Login extends HookWidget {
   final _formKey = GlobalKey<FormState>();
 
   handleAuth({
+    Wedding wedding,
+    @required String routeName,
     @required BuildContext context,
     @required RequestResult result,
-    @required String routeName,
   }) async {
+    if (result.statusCode == 200 && wedding != null) {
+      Navigator.pushNamedAndRemoveUntil(context, routeName, (_) => false);
+      return;
+    }
+
     if (result.statusCode == 200) {
       Navigator.pushNamedAndRemoveUntil(context, routeName, (_) => false);
       return;
@@ -81,9 +89,12 @@ class Login extends HookWidget {
                       final result = await AuthService()
                           .tryLogin(emailController.text, passController.text);
 
+                      final wedding = await WeddingService().getWedding();
+
                       handleAuth(
                         context: ctx,
                         result: result,
+                        wedding: wedding,
                         routeName: Routes.welcome,
                       );
                     }

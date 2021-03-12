@@ -7,7 +7,7 @@ import 'package:weeding_planner/protocol/request_result.dart';
 import 'package:weeding_planner/services/firebase.dart';
 import 'package:weeding_planner/services/sharedPrefs.dart';
 
-class WeedingService {
+class WeddingService {
   FirebaseService _firebaseService = GetIt.I.get<FirebaseService>();
   final prefs = SharedPrefs();
 
@@ -41,7 +41,7 @@ class WeedingService {
     }
   }
 
-  Future<Wedding> getWeeding() async {
+  Future<Wedding> getWedding() async {
     CollectionReference weddings =
         _firebaseService.database.collection('weddings');
 

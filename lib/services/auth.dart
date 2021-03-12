@@ -7,11 +7,11 @@ import 'package:weeding_planner/services/firebase.dart';
 import 'package:weeding_planner/services/sharedPrefs.dart';
 
 class AuthService {
-  FirebaseService _firebaseService = GetIt.I.get<FirebaseService>();
+  FirebaseAuth _firebaseAuth = GetIt.I.get<FirebaseService>().firebaseAuth;
   Future<RequestResult> tryLogin(String email, String password) async {
     try {
       UserCredential userCredential =
-          await _firebaseService.firebaseAuth.signInWithEmailAndPassword(
+          await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -33,7 +33,7 @@ class AuthService {
   Future<RequestResult> tryCreateUser(String email, String password) async {
     try {
       UserCredential userCredential =
-          await _firebaseService.firebaseAuth.createUserWithEmailAndPassword(
+          await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -47,7 +47,7 @@ class AuthService {
       } else if (e.code == 'email-already-in-use') {
         return requestError(403, 'E-mail já cadastrado !');
       }
-
+      print("=>>> $e");
       return requestError(500, 'Houve um problema :(');
     }
   }

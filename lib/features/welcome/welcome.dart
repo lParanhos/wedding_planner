@@ -14,7 +14,7 @@ class Welcome extends StatelessWidget {
     String groomName,
     DateTime weedingDay,
   }) async {
-    RequestResult result = await WeedingService().tryCreateWedding(
+    RequestResult result = await WeddingService().tryCreateWedding(
         brideName: brideName, groomName: groomName, weddingDay: weedingDay);
 
     if (result.statusCode == 200) {

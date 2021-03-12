@@ -10,9 +10,9 @@ class Wedding {
 
   factory Wedding.fromJson(DocumentSnapshot doc) => Wedding(
         id: doc.id,
-        groomName: doc['groomName'],
-        brideName: doc['brideName'],
-        weddingDay: doc['weddingDay'],
+        groomName: doc.data()['groomName'],
+        brideName: doc.data()['brideName'],
+        weddingDay: doc.data()['weddingDay'],
       );
 
   Map<String, dynamic> toJSON() => {
