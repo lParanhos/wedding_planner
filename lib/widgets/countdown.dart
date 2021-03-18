@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:weeding_planner/models/wedding.dart';
 import 'package:weeding_planner/utils/assets.dart';
 
 class Countdown extends StatelessWidget {
-  final time = DateTime.now().add(Duration(days: 90));
+  final Wedding wedding;
 
-  int get _countdown => time.difference(DateTime.now()).inDays;
+  Countdown(this.wedding);
+
+  int get _countdown => wedding.weddingDay.difference(DateTime.now()).inDays;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +32,8 @@ class Countdown extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Leandro & Samira',
+                Text(
+                  '${wedding.groomName} & ${wedding.brideName}',
                   style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.white,
@@ -62,7 +64,7 @@ class Countdown extends StatelessWidget {
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  DateFormat('dd/MM/yyyy').format(time),
+                  wedding.formatedDate,
                   style: TextStyle(
                     fontSize: 14.0,
                     color: Colors.white,

@@ -7,6 +7,7 @@ import 'package:weeding_planner/features/onboarding/onboarding.dart';
 import 'package:weeding_planner/features/splash_screen/splash_screen.dart';
 import 'package:weeding_planner/features/suppliers/suppliers.dart';
 import 'package:weeding_planner/features/welcome/welcome.dart';
+import 'package:weeding_planner/models/wedding.dart';
 
 class Routes {
   static const login = '/login';
@@ -23,7 +24,10 @@ extension RoutesMap on Routes {
   static Map<String, WidgetBuilder> get routes => {
         Routes.login: (context) => Login(),
         Routes.welcome: (context) => Welcome(),
-        Routes.home: (context) => Home(),
+        Routes.home: (context) {
+          final wedding = ModalRoute.of(context).settings.arguments as Wedding;
+          return Home(wedding);
+        },
         Routes.groomsmen: (context) => Groomsmen(),
         Routes.guests: (context) => Guests(),
         Routes.suppliers: (context) => Suppliers(),

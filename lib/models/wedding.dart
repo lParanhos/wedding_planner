@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class Wedding {
   String id;
@@ -12,7 +13,7 @@ class Wedding {
         id: doc.id,
         groomName: doc.data()['groomName'],
         brideName: doc.data()['brideName'],
-        weddingDay: doc.data()['weddingDay'],
+        weddingDay: doc.data()['weddingDay'].toDate(),
       );
 
   Map<String, dynamic> toJSON() => {
@@ -20,4 +21,6 @@ class Wedding {
         'brideName': this.brideName,
         'weddingDay': this.weddingDay,
       };
+
+  String get formatedDate => DateFormat('dd/MM/yyyy').format(weddingDay);
 }
